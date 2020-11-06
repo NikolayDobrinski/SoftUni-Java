@@ -2,6 +2,9 @@ package softuni.fundamentals.easy;
 
 import java.util.Scanner;
 
+/**
+ * This task calculates 30 minutes from the entered time.
+ */
 public class BackIn30Minutes {
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
