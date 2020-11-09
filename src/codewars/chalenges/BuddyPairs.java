@@ -1,4 +1,4 @@
-package softuni.fundamentals.codewars;
+package codewars.chalenges;
 
 public class BuddyPairs {
 
