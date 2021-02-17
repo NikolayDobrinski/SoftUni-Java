@@ -76,10 +76,9 @@ public class SantasPresentFactory {
                 }
             }
 
-            if (presents.get("Doll") > 0 && presents.get("Wooden train") > 0 || presents.get("Teddy bear") > 0
-                    && presents.get("Bicycle") > 0) {
+            if ((presents.get("Doll") > 0 && presents.get("Wooden train") > 0) || (presents.get("Teddy bear") > 0
+                    && presents.get("Bicycle") > 0)) {
                 isSuccess = true;
-                break;
             }
         }
         if (isSuccess) {
