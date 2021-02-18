@@ -11,7 +11,7 @@ public class Main {
 
         bag.add(present);
 
-        bag.remove("Toy"); // false
+        System.out.println(bag.remove("Toy")); // false
 
         Present secondPresent = new Present("Train", 2, "boy");
 

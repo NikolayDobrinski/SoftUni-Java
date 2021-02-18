@@ -7,12 +7,12 @@ public class Bag {
 
     private String color;
     private int capacity;
-    private List<Present> presents;
+    private List<Present> data;
 
     public Bag(String color, int capacity) {
         this.color = color;
         this.capacity = capacity;
-        this.presents = new ArrayList<>();
+        this.data = new ArrayList<>();
     }
 
     public String getColor() {
@@ -24,22 +24,22 @@ public class Bag {
     }
 
     public int count() {
-        return this.presents.size();
+        return this.data.size();
     }
 
     public void add(Present present) {
-        if (capacity > presents.size()) {
-            presents.add(present);
+        if (capacity > data.size()) {
+            data.add(present);
         }
     }
 
     public boolean remove(String name) {
-        return presents.removeIf(p -> p.getName().equals(name));
+        return data.removeIf(p -> p.getName().equals(name));
     }
 
     public Present heaviestPresent() {
         Present heaviest = null;
-        for (Present p : presents) {
+        for (Present p : data) {
             if (heaviest == null || p.getWeight() > heaviest.getWeight()) {
                 heaviest = p;
             }
@@ -49,7 +49,7 @@ public class Bag {
 
     public Present getPresent(String name) {
         Present present = null;
-        for (Present p : presents) {
+        for (Present p : data) {
             if (p.getName().equals(name)) {
                 present = p;
             }
@@ -60,7 +60,7 @@ public class Bag {
     public String report() {
         StringBuilder sb = new StringBuilder();
         sb.append(this.color + " bag contains:").append(System.lineSeparator());
-        for (Present p : presents) {
+        for (Present p : data) {
             sb.append(p.toString()).append(System.lineSeparator());
         }
         return sb.toString().trim();
