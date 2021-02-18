@@ -1,6 +1,7 @@
 package softuni.advanced.examprep.Christmas;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class Bag {
@@ -28,33 +29,33 @@ public class Bag {
     }
 
     public void add(Present present) {
-        if (capacity > data.size()) {
-            data.add(present);
+        if (this.capacity > this.data.size()) {
+            this.data.add(present);
         }
     }
 
     public boolean remove(String name) {
-        return data.removeIf(p -> p.getName().equals(name));
+        return this.data.removeIf(p -> p.getName().equals(name));
     }
 
     public Present heaviestPresent() {
-        Present heaviest = null;
-        for (Present p : data) {
-            if (heaviest == null || p.getWeight() > heaviest.getWeight()) {
-                heaviest = p;
-            }
-        }
-        return heaviest;
+        Present heaviestOne = this.data.stream()
+                .sorted((f, s) -> Double.compare(s.getWeight(), f.getWeight()))
+                .findFirst()
+                .orElse(null);
+
+        return heaviestOne;
     }
 
     public Present getPresent(String name) {
-        Present present = null;
-        for (Present p : data) {
-            if (p.getName().equals(name)) {
-                present = p;
+        Present presentByName = null;
+        for (Present present : this.data) {
+            if (present.getName().equals(name)){
+                presentByName = present;
+                break;
             }
         }
-        return present;
+        return presentByName;
     }
 
     public String report() {
