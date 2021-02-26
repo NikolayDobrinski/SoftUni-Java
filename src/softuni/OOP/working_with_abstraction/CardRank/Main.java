@@ -1,4 +1,4 @@
-package softuni.OOP.CardRank;
+package softuni.OOP.working_with_abstraction.CardRank;
 
 /** Description:
  * We have to create an enumeration type that has as its constants the fourteen ranks of a deck of playing cards

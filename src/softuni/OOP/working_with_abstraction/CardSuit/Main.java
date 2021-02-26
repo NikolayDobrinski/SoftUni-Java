@@ -1,4 +1,4 @@
-package softuni.OOP.CardSuit;
+package softuni.OOP.working_with_abstraction.CardSuit;
 
 /** Description:
  * We have to create an enumeration type that has as its constants the four suits of a deck of playing cards (CLUBS,

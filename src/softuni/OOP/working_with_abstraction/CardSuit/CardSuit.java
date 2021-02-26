@@ -1,4 +1,4 @@
-package softuni.OOP.CardSuit;
+package softuni.OOP.working_with_abstraction.CardSuit;
 
 public enum CardSuit {
     CLUBS,
