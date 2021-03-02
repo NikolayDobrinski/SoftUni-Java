@@ -8,12 +8,12 @@ public class SortArrayMinSwaps {
 
         int[] arr = new int[]{1, 4, 3, 2};
 
-        int moves = countMoves(arr);
+        int swaps = swapCalculator(arr);
 
-        System.out.println(moves);
+        System.out.println(swaps);
     }
 
-    private static int countMoves(int[] arr) {
+    private static int swapCalculator(int[] arr) {
         boolean[] isVisited = new boolean[arr.length + 1];
         Map<Integer, Integer> nodeMap = new HashMap<>();
 
