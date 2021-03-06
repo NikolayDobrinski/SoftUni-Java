@@ -5,62 +5,61 @@ import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) {
-        Scanner scan = new Scanner(System.in);
 
-        Map<String, Person> people = new LinkedHashMap<>();
-        Map<String, Product> products = new HashMap<>();
+        Scanner sc = new Scanner(System.in);
 
-        try {
-            Arrays.stream(scan.nextLine().split(";"))
-                    .forEach(p -> {
-                        String[] tokens = p.split("=");
-                        Person person = new Person(tokens[0], Double.parseDouble(tokens[1]));
-                        people.putIfAbsent(tokens[0], person);
-                    });
+        String[] people = sc.nextLine().split(";");
 
+        Map<String, Person> peopleInfo = new HashMap<>();
+        Map<String, Product> productsInfo = new HashMap<>();
 
-            Arrays.stream(scan.nextLine().split(";"))
-                    .forEach(p -> {
-                        String[] tokens = p.split("=");
-                        Product product = new Product(tokens[0], Double.parseDouble(tokens[1]));
-                        products.putIfAbsent(tokens[0], product);
-                    });
-        } catch (IllegalArgumentException iae) {
-            System.out.println(iae.getMessage());
-            return;
+        for (String element : people) {
+            String[] personData = element.split("=");
+            String name = personData[0];
+            double money = Double.parseDouble(personData[1]);
+
+            try{
+                Person person = new Person(name, money);
+                peopleInfo.put(person.getName(), person);
+            } catch (IllegalArgumentException e){
+                System.out.println(e.getMessage());
+                return;
+            }
         }
 
-        String line;
-        while (!"END".equals(line = scan.nextLine())) {
-            String[] tokens = line.split("\\s+");
+        String[] products = sc.nextLine().split(";");
 
-            String personName = tokens[0];
-            String productName = tokens[1];
+        for (String element : products) {
+            String[] productData = element.split("=");
+            String name = productData[0];
+            double cost = Double.parseDouble(productData[1]);
 
-            Person person = people.get(personName);
-            Product product = products.get(productName);
-
-            if (person == null || product == null) {
-                continue;
+            try{
+                Product product = new Product(name, cost);
+                productsInfo.put(product.getName(), product);
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+                return;
             }
+        }
+
+        String line = "";
+
+        while(!"END".equals(line = sc.nextLine())){
+            String[] tokens = line.split("\\s+");
+            String person = tokens[0];
+            String product = tokens[1];
 
             try {
-                person.buyProduct(product);
-                System.out.println(String.format("%s bought %s", person.getName(), product.getName()));
-            } catch (IllegalStateException ise) {
-                System.out.println(ise.getMessage());
+                peopleInfo.get(person).buyProduct(productsInfo.get(product));
+            } catch (IllegalArgumentException e){
+                System.out.println(e.getMessage());
             }
         }
 
-        people.values().forEach(p -> {
-            StringBuilder result = new StringBuilder();
-            if (p.getProducts().size() == 0) {
-                result.append(String.format("%s - Nothing bought", p.getName()));
-            } else {
-                result.append(String.format("%s - %s", p.getName(), p.getProducts().stream().map(Product::getName).collect(Collectors.joining(", "))));
-            }
+        for (Person person : peopleInfo.values()) {
+            System.out.println(person);
+        }
 
-            System.out.println(result.toString());
-        });
     }
 }

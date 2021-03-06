@@ -10,20 +10,25 @@ public class Product {
     }
 
     public String getName() {
-        return this.name;
+        return name;
     }
 
     private void setName(String name) {
-        Validator.validateName(name);
+        name = name.replaceAll("\\s+", "");
+        if (name.isEmpty()) {
+            throw new IllegalArgumentException("Name cannot be empty");
+        }
         this.name = name;
     }
 
     public double getCost() {
-        return this.cost;
+        return cost;
     }
 
     private void setCost(double cost) {
-        Validator.validateMoney(cost);
+        if (cost < 0) {
+            throw new IllegalArgumentException("Money cannot be negative");
+        }
         this.cost = cost;
     }
 }

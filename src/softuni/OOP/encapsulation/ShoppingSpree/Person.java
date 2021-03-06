@@ -10,40 +10,61 @@ public class Person {
     private List<Product> products;
 
     public Person(String name, double money) {
-        this.name = name;
-        this.money = money;
+        this.setName(name);
+        this.setMoney(money);
         this.products = new ArrayList<>();
     }
 
     public String getName() {
-        return this.name;
+        return name;
     }
 
     private void setName(String name) {
-        Validator.validateName(name);
-        this.name = name;
+        name = name.replaceAll("\\s+", "");
+        if (name.isEmpty()) {
+            throw new IllegalArgumentException("Name cannot be empty");
+        } else {
+            this.name = name;
+        }
+    }
+
+    public double getMoney() {
+        return money;
     }
 
     private void setMoney(double money) {
-        Validator.validateMoney(money);
-        this.money = money;
-    }
-
-    //+	buyProduct (Product) : void
-    public void buyProduct(Product product) {
-        if (!hasEnoughMoney(product)) {
-            throw new IllegalArgumentException(String.format("%s can't afford %s", this.name, product.getName()));
+        if (money < 0) {
+            throw new IllegalArgumentException("Money cannot be negative");
+        } else {
+            this.money = money;
         }
-
-        this.money -= product.getCost();
-        this.products.add(product);
     }
 
-    public List<Product> getProducts() {
-        return Collections.unmodifiableList(this.products);
+    public void buyProduct(Product product) {
+        if (this.getMoney() - product.getCost() >= 0) {
+            this.money -= product.getCost();
+            this.products.add(product);
+            System.out.println(this.getName() + " bought " + product.getName());
+        } else {
+            String e = String.format("%s can't afford %s",
+                    this.getName(), product.getName());
+            throw new IllegalArgumentException(e);
+        }
     }
 
-    private boolean hasEnoughMoney(Product product) {
-        return this.money >= product.getCost();
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.getName() + " - ");
+
+        if (!this.products.isEmpty()) {
+            for (Product product : this.products) {
+                sb.append(product.getName() + ", ");
+            }
+            return sb.toString().substring(0, sb.toString().length() - 2);
+        } else {
+            sb.append("Nothing bought");
+            return sb.toString();
+        }
     }
 }
