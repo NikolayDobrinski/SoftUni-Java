@@ -4,31 +4,41 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        Scanner scan = new Scanner(System.in);
 
-        String[] pizzaTokens = scan.nextLine().split("\\s+");
-        String[] doughTokens = scan.nextLine().split("\\s+");
+        Scanner sc = new Scanner(System.in);
 
-        Pizza pizza;
         try {
-            int countOfToppings = Integer.parseInt(pizzaTokens[2]);
-            pizza = new Pizza(pizzaTokens[1], countOfToppings);
-            Dough dough = new Dough(doughTokens[1], doughTokens[2], Double.parseDouble(doughTokens[3]));
+            String[] pizzaTokens = sc.nextLine().split("\\s+");
+            String pizzaName = pizzaTokens[1];
+            int numberOfToppings = Integer.parseInt(pizzaTokens[2]);
+
+            Pizza pizza = new Pizza(pizzaName, numberOfToppings);
+
+            String[] doughTokens = sc.nextLine().split("\\s+");
+            String flourType = doughTokens[1];
+            String bakingTechnique = doughTokens[2];
+            double doughWeight = Double.parseDouble(doughTokens[3]);
+
+            Dough dough = new Dough(flourType, bakingTechnique, doughWeight);
+
             pizza.setDough(dough);
 
-            for (int i = 0; i < countOfToppings; i++) {
-                String[] toppingTokens = scan.nextLine().split("\\s+");
-                Topping topping = new Topping(toppingTokens[1], Double.parseDouble(toppingTokens[2]));
+            String line = "";
+
+            while (!"END".equals(line = sc.nextLine())) {
+                String[] toppingTokens = line.split("\\s+");
+                String toppingType = toppingTokens[1];
+                double toppingWeight = Double.parseDouble(toppingTokens[2]);
+
+                Topping topping = new Topping(toppingType, toppingWeight);
 
                 pizza.addTopping(topping);
             }
 
-        } catch (IllegalArgumentException iae) {
-            System.err.println(iae.getMessage());
-            return;
+            System.out.println(pizza.toString());
+        } catch (IllegalArgumentException ex) {
+            System.out.println(ex.getMessage());
         }
-
-        System.out.println(String.format("%s - %.2f", pizza.getName(), pizza.getOverallCalories()));
     }
 }
 

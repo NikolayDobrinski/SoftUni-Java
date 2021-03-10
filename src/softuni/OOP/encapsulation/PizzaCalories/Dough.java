@@ -7,60 +7,42 @@ public class Dough {
     private double weight;
 
     public Dough(String flourType, String bakingTechnique, double weight) {
-        setFlourType(flourType);
-        setBakingTechnique(bakingTechnique);
-        setWeight(weight);
-    }
-
-    private void setWeight(double weight) {
-        if (weight < 1 || weight > 200) {
-            throw new IllegalStateException("Dough weight should be in the range [1..200].");
-        }
-        this.weight = weight;
+        this.setFlourType(flourType);
+        this.setBakingTechnique(bakingTechnique);
+        this.setWeight(weight);
     }
 
     private void setFlourType(String flourType) {
-        if (!"White".equals(flourType) && !"Wholegrain".equals(flourType)) {
-            throw new IllegalArgumentException("Invalid type of dough.");
-        }
+        Validator.validateFlourType(flourType);
         this.flourType = flourType;
     }
 
     private void setBakingTechnique(String bakingTechnique) {
-        if (!"Crispy".equals(bakingTechnique)
-                && !"Chewy".equals(bakingTechnique)
-                && !"Homemade".equals(bakingTechnique)) {
-            throw new IllegalArgumentException("Invalid type of dough.");
-        }
+        Validator.validateBakingTechnique(bakingTechnique);
         this.bakingTechnique = bakingTechnique;
     }
 
+    private void setWeight(double weight) {
+        Validator.validateDoughWeight(weight);
+        this.weight = weight;
+    }
+
     public double calculateCalories() {
-        return this.weight * 2 * this.getModifiersByBakingTechnique(this.bakingTechnique) *
-                this.getModifiersByFlourType(this.flourType);
-    }
+        double calories = this.weight * 2;
 
-    public double getModifiersByBakingTechnique(String bakingTechnique) {
-        switch (bakingTechnique) {
+        if ("White".equals(this.flourType)) {
+            calories *= 1.5;
+        }
+
+        switch (this.bakingTechnique) {
             case "Crispy":
-                return 0.9;
+                calories *= 0.9;
+                break;
             case "Chewy":
-                return 1.1;
-            case "Homemade":
-                return 1.0;
-            default:
-                return 0.0;
+                calories *= 1.1;
+                break;
         }
-    }
 
-    public double getModifiersByFlourType(String flourType) {
-        switch (flourType) {
-            case "White":
-                return 1.5;
-            case "Wholegrain":
-                return 1.0;
-            default:
-                return 0.0;
-        }
+        return calories;
     }
 }

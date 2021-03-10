@@ -1,4 +1,4 @@
-package softuni.fundamentals.mentormate;
+package softuni.fundamentals.associativearrays;
 
 import java.util.Scanner;
 
