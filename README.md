@@ -1,1 +1,1 @@
-Some of my solutions to the problems from the course Fundamentals module with Java.
+Contains homework and exam problems from the curriculum of Software University.
