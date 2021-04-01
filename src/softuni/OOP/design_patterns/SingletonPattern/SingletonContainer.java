@@ -14,7 +14,7 @@ public class SingletonContainer {
     //methods
 
     public static PopulationTracker getTracker() {
-        if (tracker == null) {
+        if (!isInitialized) {
             throw new IllegalStateException("SingletonContainer not initilized call .init() first");
         }
         return tracker;
