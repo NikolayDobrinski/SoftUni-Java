@@ -1,4 +1,4 @@
-package softuni.OOP.design_patterns.SingletonPattern;
+package softuni.OOP.design_patterns.singleton_pattern;
 
 public class SingletonContainer {
     //ctor

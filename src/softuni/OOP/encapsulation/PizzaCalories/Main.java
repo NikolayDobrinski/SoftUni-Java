@@ -5,39 +5,24 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
 
-        Scanner sc = new Scanner(System.in);
+        Scanner scan = new Scanner(System.in);
 
+        String[] pizzaInfo = scan.nextLine ().split ("\\s+");
         try {
-            String[] pizzaTokens = sc.nextLine().split("\\s+");
-            String pizzaName = pizzaTokens[1];
-            int numberOfToppings = Integer.parseInt(pizzaTokens[2]);
-
-            Pizza pizza = new Pizza(pizzaName, numberOfToppings);
-
-            String[] doughTokens = sc.nextLine().split("\\s+");
-            String flourType = doughTokens[1];
-            String bakingTechnique = doughTokens[2];
-            double doughWeight = Double.parseDouble(doughTokens[3]);
-
-            Dough dough = new Dough(flourType, bakingTechnique, doughWeight);
-
-            pizza.setDough(dough);
-
-            String line = "";
-
-            while (!"END".equals(line = sc.nextLine())) {
-                String[] toppingTokens = line.split("\\s+");
-                String toppingType = toppingTokens[1];
-                double toppingWeight = Double.parseDouble(toppingTokens[2]);
-
-                Topping topping = new Topping(toppingType, toppingWeight);
-
-                pizza.addTopping(topping);
+            Pizza    pizza     = new Pizza (pizzaInfo[1], Integer.parseInt (pizzaInfo[2]));
+            String[] doughInfo = scan.nextLine ().split ("\\s+");
+            Dough    dough     = new Dough (doughInfo[1], doughInfo[2], Double.parseDouble (doughInfo[3]));
+            pizza.setDough (dough);
+            String   input     = scan.nextLine ();
+            while (!"END".equals (input)) {
+                String[] toppingInfo = input.split ("\\s+");
+                Topping  topping     = new Topping (toppingInfo[1], Double.parseDouble (toppingInfo[2]));
+                pizza.addTopping (topping);
+                input = scan.nextLine ();
             }
-
-            System.out.println(pizza.toString());
-        } catch (IllegalArgumentException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println (pizza.toString ());
+        }catch (IllegalArgumentException ex){
+            System.out.println (ex.getMessage ());
         }
     }
 }

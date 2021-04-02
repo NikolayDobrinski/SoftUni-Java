@@ -1,4 +1,4 @@
-package softuni.OOP.design_patterns.PrototypePattern;
+package softuni.OOP.design_patterns.prototype_pattern;
 
 public abstract class Prototype {
     private String id;
