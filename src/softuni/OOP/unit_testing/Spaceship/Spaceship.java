@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class Spaceship {
-
     private static final String INVALID_SPACESHIP_NAME = "Invalid spaceship name!";
     private static final String INVALID_CAPACITY = "Invalid capacity!";
     private static final String SPACESHIP_FULL = "Spaceship is full!";
