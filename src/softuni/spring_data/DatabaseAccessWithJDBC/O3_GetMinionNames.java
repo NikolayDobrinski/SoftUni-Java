@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class O3_GetMinionNames {
     public static void main(String[] args) throws SQLException {
 
-        Connection connection = DriverManager.getConnection("jdbc:mysql:localhost:3306/minions_db", "sa", "");
+        Connection connection = DriverManager.getConnection("jdbc:h2:~/minions_db", "sa", "");
 
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter villain id: ");
@@ -41,7 +41,7 @@ public class O3_GetMinionNames {
             }
         }
         else {
-            System.out.printf("No villain with ID %d exists in the database", villainId);
+            System.out.printf("No villain with ID %d exists in the database.", villainId);
         }
     }
 }

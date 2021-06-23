@@ -3,16 +3,16 @@ package softuni.spring_data.DatabaseAccessWithJDBC;
 import java.sql.*;
 
 public class O2_GetVillainsNames {
-    public static void main(String[] args) throws SQLException, ClassNotFoundException {
+    public static void main(String[] args) throws SQLException {
 
-        Connection connection = DriverManager.getConnection("jdbc:mysql:localhost:3306/minions_db", "sa", "");
+        Connection connection = DriverManager.getConnection("jdbc:h2:~/minions_db", "sa", "");
 
         PreparedStatement preparedStatement = connection
                 .prepareStatement("SELECT v.name, COUNT(DISTINCT mv.minion_id) AS `m.count` " +
                         "FROM villains AS v JOIN minions_villains AS mv " +
-                        "ON v.id = mv.villains_id" +
+                        "ON v.id = mv.villain_id" +
                         " GROUP BY v.name" +
-                        " HAVING `m.count` > 15;)");
+                        " HAVING `m.count` > 15;");
 
         ResultSet resultSet = preparedStatement.executeQuery();
 

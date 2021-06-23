@@ -8,14 +8,16 @@ import java.util.Scanner;
 public class O5_ChangeTownNamesCasing {
     public static void main(String[] args) throws SQLException {
 
-        Connection connection = DriverManager.getConnection("jdbc:mysql:localhost:3306/minions_db", "sa", "");
+        Connection connection = DriverManager.getConnection("jdbc:h2:~/minions_db", "sa", "");
 
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter country name: ");
         String countryName = scanner.nextLine();
 
         PreparedStatement preparedStatement = connection
-                .prepareStatement("SELECT towns SET name = UPPER(name) WHERE country = ?");
+                .prepareStatement("UPDATE towns" +
+                        " SET name = UPPER(name)" +
+                        " WHERE country = ?");
         preparedStatement.setString(1, countryName);
 
         int affectedRows = preparedStatement.executeUpdate();
