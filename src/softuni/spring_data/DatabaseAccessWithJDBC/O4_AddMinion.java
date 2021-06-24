@@ -9,37 +9,38 @@ public class O4_AddMinion {
 
         Connection connection = DriverManager.getConnection("jdbc:h2:~/minions_db", "sa", "");
 
-        // четем двата реда вход
+        // reading the input
 
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter input: ");
         String inputMinion = scanner.nextLine();
         String inputVillian = scanner.nextLine();
 
-        //Сплитвам редовете за да взема нужната информация и да проверя в базите
+        //split the input and extract information needed
 
         String[] villainInfo = inputVillian.split(": ");
         String villainName = villainInfo[1];
 
-        //проверявам дали има наличен такъв Villain
+        //checking all villains names existing into the database
 
         PreparedStatement preparedStatementVillain = connection
-                .prepareStatement("SELECT id FROM villains WHERE name = ?");
-        preparedStatementVillain.setString(1, villainName);
+                .prepareStatement("SELECT name FROM villains");
 
-        ResultSet resultSetVillain = preparedStatementVillain.executeQuery();
+        ResultSet findVillain = preparedStatementVillain.executeQuery();
 
-        int getVillainId = 0;
+        boolean isFound = false;
 
-        //проверявам дали е върнало, че има такъв Villain, като ако getVillainId = 0, значи няма такъв
-
-        if (resultSetVillain.next()) {
-            getVillainId = resultSetVillain.getInt("id");
+        while (findVillain.next()) {
+            String name = findVillain.getString("name");
+            if (name.equals(villainName)) {
+                isFound = true;
+                break;
+            }
         }
+        // if villain with such name does not exists, I am creating new one
 
-        // ако няма намерен, създаваме нов Villain
+        if (!isFound) {
 
-        if (getVillainId == 0) {
             PreparedStatement preparedStatementAddNewVillain = connection
                     .prepareStatement("INSERT INTO villains (name, evilness_factor) VALUES (?, ?)");
             preparedStatementAddNewVillain.setString(1, villainName);
@@ -50,7 +51,7 @@ public class O4_AddMinion {
             System.out.printf("Villain %s was added to the database.%n", villainName);
         }
 
-        // Сплитваме входната информация за миниона
+        // split the input information about minion
 
         String[] splitMinionInfo = inputMinion.split(": ");
         String[] minionInfo = splitMinionInfo[1].split(" ");
@@ -58,23 +59,24 @@ public class O4_AddMinion {
         int age = Integer.parseInt(minionInfo[1]);
         String town = minionInfo[2];
 
-        //проверявам в базата дали има такъв град
+        // checking all town names existing into database
 
-        PreparedStatement getTownId = connection.prepareStatement("SELECT id FROM towns WHERE name = ?");
-        getTownId.setString(1, town);
+        PreparedStatement getTown = connection.prepareStatement("SELECT name FROM towns");
 
-        ResultSet resultSetTownId = getTownId.executeQuery();
-        int id = 0;
+        ResultSet findTown = getTown.executeQuery();
+        boolean townFound = false;
 
-        if (resultSetTownId.next()) {
-            id = resultSetTownId.getInt("id");
+        while (findTown.next()) {
+            String townName = findTown.getString("name");
+            if (townName.equals(town)) {
+                townFound = true;
+                break;
+            }
         }
 
-        int newId = 0;
+        // if such town does not exists, I am creating new one
 
-        //ако няма такъв град, създаваме нов град
-
-        if (id == 0) {
+        if (!townFound) {
             PreparedStatement createNewTown = connection
                     .prepareStatement("INSERT INTO towns (name) VALUES (?)");
             createNewTown.setString(1, town);
@@ -82,35 +84,49 @@ public class O4_AddMinion {
             createNewTown.executeUpdate();
 
             System.out.printf("Town %s was added to the database.%n", town);
+        }
 
-            //взимаме ID-то на новия град за да го въведем като правим новия минион
+        // I need to get the town Id, because i have to put the town_id when creating new minion
 
-            PreparedStatement getNewTownId = connection.prepareStatement("SELECT id FROM town WHERE name = ?");
-            getNewTownId.setString(1, town);
+        PreparedStatement getNewTownId = connection
+                .prepareStatement("SELECT * FROM towns WHERE name = ?");
+        getNewTownId.setString(1, town);
 
-            ResultSet resultSetNewTownId = getNewTownId.executeQuery();
+        ResultSet resultSetTownId = getNewTownId.executeQuery();
 
-            if (resultSetNewTownId.next()) {
-                newId = resultSetNewTownId.getInt("id");
+        int newTownId = 0;
+
+        while (resultSetTownId.next()) {
+            String townName = resultSetTownId.getString("name");
+            if (townName.equals(town)) {
+                newTownId = resultSetTownId.getInt("id");
             }
         }
 
-        //провярявам дали има такъв минион в базата
+        // checking for the minion
 
         PreparedStatement preparedStatement = connection
-                .prepareStatement("SELECT * FROM minions WHERE name = ?");
-        preparedStatement.setString(1, name);
+                .prepareStatement("SELECT * FROM minions");
 
         ResultSet resultSet = preparedStatement.executeQuery();
 
-        //ако няма и е върнало null, създавам нов минион
+        boolean minionFound = false;
+        while (resultSet.next()) {
+            String minionName = resultSet.getString("name");
+            if (minionName.equals(name)) {
+                minionFound = true;
+                break;
+            }
+        }
 
-        if (resultSet == null) {
+        // if minion with such name does not exists into database, I create new one
+
+        if (!minionFound) {
             PreparedStatement addNewMinion = connection
                     .prepareStatement("INSERT INTO minions (name, age, town_id) VALUES (?, ?, ?)");
             addNewMinion.setString(1, name);
             addNewMinion.setInt(2, age);
-            addNewMinion.setInt(3, newId);
+            addNewMinion.setInt(3, newTownId);
 
             addNewMinion.executeUpdate();
 
