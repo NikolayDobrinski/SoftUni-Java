@@ -24,4 +24,12 @@ public interface BookService {
     List<String> findNotReleasedBookTitlesInYear(int year);
 
     List<String> findAllBooksBeforeDate(LocalDate localDate);
+
+    List<String> findAllBookTitlesWhereTitleContains(String containedStr);
+
+    List<String> findAllTitleWithLastNameStartsWith(String startsWith);
+
+    int findCountOfBooksWithTitleLongerThan(int titleLength);
+
+    void changeBookPrice(long l);
 }

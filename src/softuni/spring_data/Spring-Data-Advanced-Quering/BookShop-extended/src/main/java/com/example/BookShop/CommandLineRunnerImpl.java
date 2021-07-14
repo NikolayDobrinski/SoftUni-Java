@@ -40,14 +40,31 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
         int exNumber = Integer.parseInt(bufferedReader.readLine());
 
         switch (exNumber) {
-            case 1: bookTitlesByAgeRestriction();
-            case 2: goldenBook();
-            case 3: bookByPrice();
-            case 4: notReleasedBooks();
-            case 5: booksReleasedBeforeDate();
-            case 6: authorsSearch();
+            case 1:
+                bookTitlesByAgeRestriction();
+            case 2:
+                goldenBook();
+            case 3:
+                bookByPrice();
+            case 4:
+                notReleasedBooks();
+            case 5:
+                booksReleasedBeforeDate();
+            case 6:
+                authorsSearch();
+            case 7:
+                bookSearch();
+            case 8:
+                bookTitleSearch();
+            case 9:
+                countBooks();
+            case 10:
+                totalBooksCopies();
+            case 99:
+                callProcedure();
         }
     }
+
 
     // exercise 1;
     private void bookTitlesByAgeRestriction() throws IOException {
@@ -66,8 +83,8 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
 
     // exercise 3;
     private void bookByPrice() {
-    bookService.findAllBooksTitlesWithPriceLessThan5OrMoreThan40()
-            .forEach(System.out::println);
+        bookService.findAllBooksTitlesWithPriceLessThan5OrMoreThan40()
+                .forEach(System.out::println);
     }
 
     // exercise 4;
@@ -95,6 +112,43 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
 
         authorService.findAuthorFirstNameEndsWithStr(endStr)
                 .forEach(System.out::println);
+    }
+
+    // exercise 7;
+    private void bookSearch() throws IOException {
+        System.out.println("Please enter containing string:");
+        String containedStr = bufferedReader.readLine();
+
+        bookService.findAllBookTitlesWhereTitleContains(containedStr)
+                .forEach(System.out::println);
+    }
+
+    // exercise 8;
+    private void bookTitleSearch() throws IOException {
+        System.out.println("Please enter author last name starts with string:");
+        String startsWith = bufferedReader.readLine();
+
+        bookService.findAllTitleWithLastNameStartsWith(startsWith)
+                .forEach(System.out::println);
+    }
+
+    // exercise 9;
+    private void countBooks() throws IOException {
+        System.out.println("Please enter title length:");
+        int titleLength = Integer.parseInt(bufferedReader.readLine());
+
+        System.out.println(bookService.findCountOfBooksWithTitleLongerThan(titleLength));
+    }
+
+    // exercise 10;
+    private void totalBooksCopies() {
+        authorService.findAllAuthorsAndTheirTotalCopies()
+                .forEach(System.out::println);
+    }
+
+    // exercise 99 - test;
+    private void callProcedure() {
+        bookService.changeBookPrice(1L);
     }
 
     private void printAllBooksByAuthorNameOrderByReleaseDate(String firstName, String lastName) {

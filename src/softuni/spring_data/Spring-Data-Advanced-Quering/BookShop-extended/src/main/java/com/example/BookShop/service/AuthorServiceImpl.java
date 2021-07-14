@@ -1,6 +1,7 @@
 package com.example.BookShop.service;
 
 import com.example.BookShop.model.entity.Author;
+import com.example.BookShop.model.entity.Book;
 import com.example.BookShop.repository.AuthorRepository;
 import org.springframework.stereotype.Service;
 
@@ -59,6 +60,17 @@ public class AuthorServiceImpl implements AuthorService {
         return authorRepository.findAllByFirstNameEndsWith(endStr)
                 .stream()
                 .map(author -> String.format("%s %s ", author.getFirstName(), author.getLastName()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<String> findAllAuthorsAndTheirTotalCopies() {
+        return authorRepository.findAll()
+                .stream()
+                .map(author -> String.format("%s %s - %d",
+                   author.getFirstName(), author.getLastName(),
+                       author.getBooks().stream().map(Book::getCopies).reduce((a, b) -> a + b)
+           .orElse(0)))
                 .collect(Collectors.toList());
     }
 }
