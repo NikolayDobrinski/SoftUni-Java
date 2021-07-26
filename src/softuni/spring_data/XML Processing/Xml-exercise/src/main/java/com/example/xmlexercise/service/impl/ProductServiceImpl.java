@@ -1,6 +1,8 @@
 package com.example.xmlexercise.service.impl;
 
 import com.example.xmlexercise.model.dtos.ProductSeedDto;
+import com.example.xmlexercise.model.dtos.ProductViewRootDto;
+import com.example.xmlexercise.model.dtos.ProductWithSellerDto;
 import com.example.xmlexercise.model.entity.Product;
 import com.example.xmlexercise.repository.ProductRepository;
 import com.example.xmlexercise.service.CategoryService;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -51,5 +54,24 @@ public class ProductServiceImpl implements ProductService {
                 return product;
                 })
                 .forEach(productRepository::save);
+    }
+
+    @Override
+    public ProductViewRootDto findProductsInRangeWithoutBuyer() {
+        ProductViewRootDto rootDto = new ProductViewRootDto();
+
+           rootDto
+                   .setProducts(productRepository
+                           .findAllByPriceBetweenAndBuyerIsNull(BigDecimal.valueOf(500L), BigDecimal.valueOf(1000L))
+                           .stream()
+                           .map(product ->  {
+                               ProductWithSellerDto productWithSellerDto = modelMapper.map(product, ProductWithSellerDto.class);
+                           productWithSellerDto.setSeller(String.format("%s %s",
+                                   product.getSeller().getFirstName(), product.getSeller().getLastName()));
+                               return productWithSellerDto;
+
+                           })
+                                   .collect(Collectors.toList()));
+        return rootDto;
     }
 }

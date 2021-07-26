@@ -1,6 +1,8 @@
 package com.example.xmlexercise.service.impl;
 
 import com.example.xmlexercise.model.dtos.UserSeedDto;
+import com.example.xmlexercise.model.dtos.UserViewRootDto;
+import com.example.xmlexercise.model.dtos.UserWithProductsDto;
 import com.example.xmlexercise.model.entity.User;
 import com.example.xmlexercise.repository.UserRepository;
 import com.example.xmlexercise.service.UserService;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -45,5 +48,18 @@ public class UserServiceImpl implements UserService {
         return userRepository
                 .findById(randomId)
                 .orElse(null);
+    }
+
+    @Override
+    public UserViewRootDto findUsersWithMoreThanOneSoldProducts() {
+
+        UserViewRootDto userViewRootDto = new UserViewRootDto();
+
+        userViewRootDto.setProducts(userRepository.findAllUsersWithMoreThanOneSoldProducts()
+        .stream()
+        .map(user -> modelMapper.map(user, UserWithProductsDto.class))
+        .collect(Collectors.toList()));
+
+        return userViewRootDto;
     }
 }
