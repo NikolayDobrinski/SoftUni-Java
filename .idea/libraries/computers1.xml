@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="computers1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/src/softuni/OOP/unit_testing/Computers/src/test/java/computers.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
